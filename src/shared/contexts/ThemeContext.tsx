@@ -8,14 +8,14 @@ interface IThemeContextData {
   toggleTheme: () => void;
 }
 
-interface IThemeProvider {
-  children: React.ReactNode
-}
-
 const ThemeContext = createContext({} as IThemeContextData)
 
 export const useAppThemeContext = () => {
   return useContext(ThemeContext);
+}
+
+interface IThemeProvider {
+  children: React.ReactNode
 }
 
 export const AppThemeProvider: React.FC<IThemeProvider> = ({ children }) => {
