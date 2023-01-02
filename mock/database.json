@@ -1,0 +1,10 @@
+{
+  "pessoas": [
+    {
+      "id": 1,
+      "email": "caiomanducas@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Caio Gabriel Manduca Silva"
+    }
+  ]
+}
