@@ -1,18 +1,27 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { LinearProgress, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { VTextField } from "../../shared/forms";
 import { Form } from "@unform/web";
+import { FormHandles, Scope } from "@unform/core";
 
-export const DetalheDePessoas = () => {
+interface IFormData {
+  email: string;
+  cidadeId: string;
+  nomeCompleto: string;
+}
+
+export const DetalheDePessoas: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { id = "nova" } = useParams<"id">();
   const [nome, setNome] = useState("");
   const navigate = useNavigate();
+
+  const formRef = useRef<FormHandles>(null);
 
   useEffect(() => {
     if (id !== "nova") {
@@ -36,11 +45,11 @@ export const DetalheDePessoas = () => {
     }
   }, []);
 
-  const handleSave = () => {
+  const handleSave = (dados: IFormData) => {
     console.log(
-      "%cDetalheDePessoas.tsx line:8 id",
+      "%c dados",
       "color: black; background-color: #007acc;",
-      id
+      dados
     );
   };
 
@@ -51,7 +60,7 @@ export const DetalheDePessoas = () => {
           alert(result.message);
         } else {
           alert("Registro apagado com sucesso!");
-          navigate('/pessoas');
+          navigate("/pessoas");
         }
       });
     }
@@ -63,11 +72,13 @@ export const DetalheDePessoas = () => {
       barraDeFerramentas={
         <FerramentasDeDetalhe
           aoClicarEmNovo={() => navigate("/pessoas/detalhe/nova")}
-          aoClicarEmApagar={() => {handleDelete(Number(id))}}
-          aoClicarEmSalvarEFechar={handleSave}
+          aoClicarEmApagar={() => {
+            handleDelete(Number(id));
+          }}
+          aoClicarEmSalvarEFechar={() => formRef.current?.submitForm()}
           mostrarBotaoApagar={id !== "nova"}
           mostrarBotaoNovo={id !== "nova"}
-          aoClicarEmSalvar={handleSave}
+          aoClicarEmSalvar={() => formRef.current?.submitForm()}
           mostrarBotaoSalvarEFechar
           aoClicarEmVoltar={() => {
             navigate("/pessoas");
@@ -75,12 +86,11 @@ export const DetalheDePessoas = () => {
         />
       }
     >
-
-      <Form onSubmit={(dados) => console.log(dados)}>
+      <Form ref={formRef} onSubmit={(dados) => handleSave(dados)}>
         <VTextField name='nomeCompleto' />
-        <button type="submit">enviar</button>
+        <VTextField name='email' />
+        <VTextField name='cidadeId' />
       </Form>
-
     </LayoutBaseDePagina>
   );
 };

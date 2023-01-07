@@ -26,13 +26,27 @@
     />
     <!-- end Font icons -->
 
-    <title>Agenda Acadêmica</title>
+    <!-- conexão com Botonic  -->
+    <script
+      type="text/javascript"
+      src="https://mrrobot-04f4f6d0-af9c-4534-af0d-844f3891b7b5.netlify.app/webchat.botonic.js"
+    ></script>
+    <!-- end conexão com Botonic  -->
 
+    <title>Agenda Acadêmica</title>
   </head>
 
-  <body style='margin: 0; padding: 0;'>
+  <body style="margin: 0; padding: 0">
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        Botonic.render(document.getElementById("root"), {
+          appId: "52084cbb-22d0-4873-b34f-0e78ac811bfc",
+          // visibility: 'dynamic', // Uncomment for enable dynamic settings (Botonic +0.12.0).
+        });
+      });
+    </script>
+
     <noscript>Você precisa de javascript para rodar a aplicação.</noscript>
     <div id="root"></div>
   </body>
-  
 </html>
